@@ -1,7 +1,7 @@
 import React from 'react'
 import Navbar from '../components/Navbar'
 import AlertBar from '../components/AlertBar'
-import MockMe from '../assets/images/MockMe.png'
+import MockMe from '../assets/images/LogoBlack.png'
 import GreyBar from '../components/GreyBar'
 import Puzzle from '../assets/images/puzzle.png'
 import Pfp from '../assets/images/pfp.png'
@@ -16,12 +16,12 @@ export default function Landing() {
       <AlertBar/>
     </div>
     <div className="flex justify-center mt-60 mb-10">
-      <img src={MockMe} className="h-18 w-auto" alt="MockMe logo" />
+      <img src={MockMe} className="h-28 w-auto" alt="MockMe logo" />
     </div>
         <div className="text-center mt-6">
           <h1 className="text-6xl font-bold">Mock with Peers from Your Campus</h1>
           <p className="text-center text-2xl mt-12 mb-6">Match with Campus Peers for Interactive Technical Practice and Achieve Interview Success.</p>
-          <button className="bg-red-500 text-white text-2xl  px-8 py-4 rounded-md mt-16">Find Your Match</button>
+          <button className="bg-red-500 text-white text-2xl  px-8 py-4 rounded-md mt-16" onClick={() => {window.location.href = "/register";}}>Find Your Match</button>
         </div>
         <div className="mt-48">
           <GreyBar />

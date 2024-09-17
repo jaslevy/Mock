@@ -24,7 +24,7 @@ const Navbar = () => {
           <a href="#" class="block py-2 px-3 text-black hover:text-yellow-400 rounded md:bg-transparent md:text-black md:p-0 dark:text-black md:dark:text-black md:hover:text-yellow-400 dark:hover:bg-transparent">Contact</a>
         </li>
         <li>
-          <a href="#" class="block py-2 px-3 text-black hover:text-yellow-400 rounded md:bg-transparent md:text-black md:p-0 dark:text-black md:dark:text-black md:hover:text-yellow-400 dark:hover:bg-transparent">Login</a>
+          <a href="/login" class="block py-2 px-3 text-black hover:text-yellow-400 rounded md:bg-transparent md:text-black md:p-0 dark:text-black md:dark:text-black md:hover:text-yellow-400 dark:hover:bg-transparent">Login</a>
         </li>
 
       </ul>
