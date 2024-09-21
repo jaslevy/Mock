@@ -1,16 +1,13 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 import RegisterFormBox from '../components/RegisterFormBox';
 
+// See https://claritydev.net/blog/build-a-multistep-form-with-react-hook-form
 const RegistrationForm = () => {
   const navigate = useNavigate();
+  const { register, handleSubmit, formState: { errors } } = useForm();
   const [step, setStep] = useState(1);
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    // Add other fields as needed for the 8 steps
-  });
 
   const handleNextStep = () => {
     setStep(step + 1);
@@ -20,15 +17,10 @@ const RegistrationForm = () => {
     setStep(step - 1);
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const onSubmit = (data) => {
     // Handle form submission, e.g., send data to backend API
-    console.log(formData);
-  };
-
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
+    console.log(data);
+    navigate('/login');
   };
 
   const stepTitles = {
@@ -44,7 +36,7 @@ const RegistrationForm = () => {
       onBackButtonClick={handlePrevStep}
     >
       {step === 1 && (
-        <>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <label
             htmlFor="firstName"
             className="block text-gray-700 text-sm font-bold mb-2"
@@ -54,11 +46,10 @@ const RegistrationForm = () => {
           <input
             type="text"
             id="firstName"
-            name="firstName"
-            value={formData.firstName}
-            onChange={handleInputChange}
+            {...register('firstName', { required: true })}
             className="border border-gray-300 rounded-lg p-2 w-full"
           />
+          {errors.firstName && <p className="text-red-500">First name is required</p>}
           <label
             htmlFor="lastName"
             className="block text-gray-700 text-sm font-bold mb-2"
@@ -68,18 +59,17 @@ const RegistrationForm = () => {
           <input
             type="text"
             id="lastName"
-            name="lastName"
-            value={formData.lastName}
-            onChange={handleInputChange}
+            {...register('lastName', { required: true })}
             className="border border-gray-300 rounded-lg p-2 w-full"
           />
+          {errors.lastName && <p className="text-red-500">Last name is required</p>}
           <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full w-full"
-            onClick={handleNextStep}
+            type="submit"
           >
             Next
           </button>
-        </>
+        </form>
       )}
       {/* Add more form inputs for each step */}
     </RegisterFormBox>
