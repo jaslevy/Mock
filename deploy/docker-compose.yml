@@ -1,0 +1,33 @@
+version: '3'
+services:
+  backend:
+    build: ../backend  # Path to backend directory
+    container_name: backend
+    ports:
+      - "8000:8000"  # Expose FastAPI on port 8000
+    volumes:
+      - ../backend:/app  # Mount backend folder for hot-reloading
+    depends_on:
+      - mongo  # Ensure MongoDB starts before the backend
+
+  frontend:
+    build: ../frontend  # Path to frontend directory
+    container_name: frontend
+    ports:
+      - "3000:80"  # Expose React on port 3000
+    volumes:
+      - ../frontend:/usr/share/nginx/html  # Mount frontend folder
+    depends_on:
+      - backend  # Ensure the backend is up before the frontend
+
+  mongo:
+    image: mongo:latest  # Use MongoDB image
+    container_name: mongo
+    ports:
+      - "27017:27017"  # Expose MongoDB port
+    volumes:
+      - ./mongo-data:/data/db  # Persist MongoDB data
+
+networks:
+  default:
+    driver: bridge
