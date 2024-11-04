@@ -1,2 +1,7 @@
-dnspython==2.6.1
-pymongo==4.8.0
+fastapi
+uvicorn
+mongoengine
+pydantic
+boto3
+requests
+python-multipart
