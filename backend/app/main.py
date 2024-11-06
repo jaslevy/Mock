@@ -18,7 +18,7 @@ app.add_middleware(
 
 app.include_router(users_router, prefix="/users", tags=["Users"])
 app.include_router(auth_router, prefix="/auth", tags=["Auth"])
-app.include_router(profile_router, prefix="/profile", tags=["Profile"])  # Include profile route
+app.include_router(profile_router, prefix="/api", tags=["Profile"])  # Include profile route
 
 @app.get("/")
 async def root():

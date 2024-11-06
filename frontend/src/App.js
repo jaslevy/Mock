@@ -22,7 +22,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/registration-form" element={<RegistrationForm />} />
           <Route path="/matching-interface" element={<MatchingInterface />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile/user" element={<Profile />} />
         </Routes>
     </Router>
   );

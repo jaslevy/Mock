@@ -1,0 +1,44 @@
+{
+    "_id": "match_data_1",  
+    "user_id": "user_1",  
+    "requests": [
+      {
+        "_id": "request_1",
+        "date": "2024-11-07",
+        "time": "12:30 PM",
+        "focus": "None",
+        "from_user": {
+          "user_id": "user_2",
+          "name": "Jane Smith",
+          "profile_picture": "path_to_profile_picture"
+        }
+      }
+    ],
+    "scheduled_mocks": [
+      {
+        "_id": "mock_1",
+        "date": "2024-11-04",
+        "time": "2:30 PM",
+        "focus": "DFS / BFS",
+        "with_user": {
+          "user_id": "user_3",
+          "name": "John Appleseed",
+          "profile_picture": "path_to_profile_picture"
+        }
+      }
+    ],
+    "history": [
+      {
+        "_id": "history_1",
+        "date": "2024-10-30",
+        "time": "1:00 PM",
+        "focus": "Binary Search",
+        "with_user": {
+          "user_id": "user_2",
+          "name": "Jane Smith",
+          "profile_picture": "path_to_profile_picture"
+        }
+      }
+    ]
+  }
+  

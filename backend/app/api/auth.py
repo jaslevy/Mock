@@ -2,12 +2,13 @@
 import json
 from fastapi import APIRouter, HTTPException, Depends, status, Form
 from pathlib import Path
+import os
 
 router = APIRouter()
 
 # Load admin data from admin_data.json
 def load_admin_data():
-    admin_data_path = Path(__file__).parent.parent / "admin_data.json"
+    admin_data_path = os.path.join(os.path.dirname(__file__), "..", "data", "admin_data.json")
     with open(admin_data_path, 'r') as f:
         return json.load(f)
 
