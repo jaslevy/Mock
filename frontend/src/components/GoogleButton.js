@@ -2,6 +2,11 @@ import React from 'react'
 
 export const GoogleButton = ({text}) => (
   <button
+  onClick={() => {
+    console.log("Sign in with Google clicked");
+    window.location.href = "http://127.0.0.1:8000/login";
+
+  }}
     aria-label="Sign in with Google"
     className="flex items-center bg-white border border-button-border-light rounded-full p-1.5 pr-6 text-lg"
   >
