@@ -1,15 +1,16 @@
-import mongoengine
+from mongoengine import connect, disconnect
+from dotenv import load_dotenv
+import os
+load_dotenv()
 
+MONGO_URI = os.getenv("MONGO_URI")
+
+
+
+MONGO_URI = "mongodb://localhost:27017"
 
 def connect_db():
-    print("Database connection skipped (no database configured).")
+    connect(db="your_database_name", host=MONGO_URI)
 
 def close_db():
-    print("Database disconnection skipped (no database configured).")
-# async def connect_db():
-#     # Make sure this function does something and does not return None
-#     mongoengine.connect(db="your_database_name", host="localhost", port=27017)
-
-# async def close_db():
-#     # This should close the MongoDB connection
-#     mongoengine.disconnect()
+    disconnect()

@@ -1,8 +1,9 @@
 # backend/app/api/profile.py
 import json
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Response
 from pathlib import Path
 import os
+from app.models.user_model import User
 
 router = APIRouter()
 
@@ -23,17 +24,31 @@ async def get_profile_data():
     except json.JSONDecodeError:
         raise HTTPException(status_code=500, detail="Error decoding profile data")
     
-@router.get("/profile/user")
+@router.get("/api/profile/user")
 async def get_user_profile_data():
-    json_file_path = os.path.join(os.path.dirname(__file__), "..", "data", "profile_data.json")
     try:
-        with open(json_file_path, "r") as file:
-            user_profile_data = json.load(file)
-        return user_profile_data
-    except FileNotFoundError:
-        raise HTTPException(status_code=404, detail="User profile data not found")
-    except json.JSONDecodeError:
-        raise HTTPException(status_code=500, detail="Error decoding user profile data")
+        print("Retrieving user profile data from MongoDB...")
+        user_profile_data = User.objects.first()  # Retrieve the first user profile data
+        print("User profile data:", user_profile_data)
+        if user_profile_data:
+            html_content = f"""
+            <html>
+                <body>
+                    <h1>User Profile</h1>
+                    <p>Name: {user_profile_data.name}</p>
+                    <p>Email: {user_profile_data.email}</p>
+                    <p>Bio: {user_profile_data.bio}</p>
+                </body>
+            </html>
+            """
+            print("HTML content:", html_content)
+            return Response(content=html_content, media_type="text/html")
+        else:
+            print("No user profile data found")
+            raise HTTPException(status_code=404, detail="User profile data not found")
+    except Exception as e:
+        print("Error:", e)
+        raise HTTPException(status_code=500, detail="Error retrieving user profile data")
 
 # @router.get("/")
 # async def get_profile_data():

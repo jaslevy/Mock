@@ -7,7 +7,7 @@ from app.api.profile import router as profile_router  # Import the profile route
 from app.db.database import connect_db, close_db
 
 
-# # AUTH IMPORTS
+### AUTH IMPORTS
 from webbrowser import get
 from fastapi import Depends, Request, HTTPException
 from fastapi.responses import RedirectResponse
@@ -18,15 +18,27 @@ from dotenv import load_dotenv
 import os
 from authlib.integrations.httpx_client import AsyncOAuth2Client 
 
+### DB IMPORTS
+from app.db.database import connect_db, close_db
+
+
 app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "localhost:3000", "http://127.0.0.1:8000", "http://localhost:8000"],
+    allow_origins=["http://localhost:3001", "localhost:3001", "http://127.0.0.1:8000", "http://localhost:8000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.on_event("startup")
+async def startup_event():
+    connect_db()
+
+@app.on_event("shutdown")
+async def shutdown_event():
+    close_db()
 
 app.include_router(users_router, prefix="/users", tags=["Users"])
 app.include_router(auth_router, prefix="/auth", tags=["Auth"])

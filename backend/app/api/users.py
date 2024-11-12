@@ -4,7 +4,7 @@ from app.models.user_model import User
 
 router = APIRouter()
 
-@router.get("/users")
-async def get_users():
-    # Fetch users from the database (dummy response here)
-    return {"users": []}
+@router.get("/users/")
+async def read_users():
+    users = User.objects.all()
+    return [{"name": user.name, "email": user.email} for user in users]
