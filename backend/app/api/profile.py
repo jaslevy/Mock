@@ -1,61 +1,84 @@
 # backend/app/api/profile.py
 import json
 from fastapi import APIRouter, HTTPException, Response
+from fastapi.requests import Request
 from pathlib import Path
 import os
-from app.models.user_model import User
+from app.models.schedules_model import Schedule
+from app.models.user_model import User  # Assuming you have a User model
+from datetime import datetime
+
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 router = APIRouter()
 
-@router.get("/profile")
-async def get_profile_data():
-    # Define the path to the JSON file and log it for debugging
-    json_file_path = os.path.join(os.path.dirname(__file__), "..", "data", "match_profile_data.json")
-    print(f"Looking for profile data at: {json_file_path}")  # Debugging line
-    
-    # Attempt to read the JSON file
-    try:
-        with open(json_file_path, "r") as file:
-            profile_data = json.load(file)
-        return profile_data
-    except FileNotFoundError:
-        print("Profile data not found at the specified path")  # Debugging line
-        raise HTTPException(status_code=404, detail="Profile data not found")
-    except json.JSONDecodeError:
-        raise HTTPException(status_code=500, detail="Error decoding profile data")
-    
-@router.get("/api/profile/user")
-async def get_user_profile_data():
-    try:
-        print("Retrieving user profile data from MongoDB...")
-        user_profile_data = User.objects.first()  # Retrieve the first user profile data
-        print("User profile data:", user_profile_data)
-        if user_profile_data:
-            html_content = f"""
-            <html>
-                <body>
-                    <h1>User Profile</h1>
-                    <p>Name: {user_profile_data.name}</p>
-                    <p>Email: {user_profile_data.email}</p>
-                    <p>Bio: {user_profile_data.bio}</p>
-                </body>
-            </html>
-            """
-            print("HTML content:", html_content)
-            return Response(content=html_content, media_type="text/html")
-        else:
-            print("No user profile data found")
-            raise HTTPException(status_code=404, detail="User profile data not found")
-    except Exception as e:
-        print("Error:", e)
-        raise HTTPException(status_code=500, detail="Error retrieving user profile data")
+DEFAULT_GOOGLE_ID = "123456789012345678901"
 
-# @router.get("/")
-# async def get_profile_data():
-#     profile_data_path = Path(__file__).parent.parent / "profile_data.json"
-#     try:
-#         with open(profile_data_path, "r") as file:
-#             data = json.load(file)
-#         return data
-#     except FileNotFoundError:
-#         raise HTTPException(status_code=404, detail="Profile data not found")
+@router.get("/maindata")
+async def get_match_data(request: Request):
+    try:
+        # Get the google_id from the query parameter, or use the default if not provided
+        google_id = request.query_params.get("google_id", DEFAULT_GOOGLE_ID)
+
+        # Query the schedules collection and filter by user_google_id
+        schedules = Schedule.objects(user_google_id=google_id)
+
+        # Prepare the data to return in the same structure as match_profile_data.json
+        profile_data = [
+            {
+                "google_id": schedule.user_google_id,
+                "requests": [
+                    {
+                        "_id": request._id,
+                        "date": request.date,
+                        "time": request.time,
+                        "focus": request.focus,
+                        "from_user": {
+                            "google_id": request.from_user.google_id,
+                            "name": request.from_user.name,
+                            "profile_picture": request.from_user.profile_picture
+                        }
+                    }
+                    for request in schedule.requests
+                ],
+                "scheduled_mocks": [
+                    {
+                        "_id": mock._id,
+                        "date": mock.date,
+                        "time": mock.time,
+                        "focus": mock.focus,
+                        "with_user": {
+                            "google_id": mock.with_user.google_id,
+                            "name": mock.with_user.name,
+                            "profile_picture": mock.with_user.profile_picture
+                        }
+                    }
+                    for mock in schedule.scheduled_mocks
+                ],
+                "history": [
+                    {
+                        "_id": history_item._id,
+                        "date": history_item.date,
+                        "time": history_item.time,
+                        "focus": history_item.focus,
+                        "with_user": {
+                            "google_id": history_item.with_user.google_id,
+                            "name": history_item.with_user.name,
+                            "profile_picture": history_item.with_user.profile_picture
+                        }
+                    }
+                    for history_item in schedule.history
+                ]
+            }
+            for schedule in schedules
+        ]
+
+        return profile_data
+    except Exception as e:
+        logger.error(f"Error: {e}")
+        return {"error": str(e)}
+
+ 

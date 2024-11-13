@@ -1,10 +1,23 @@
+### Next steps:
+# 1. store logged in user google_id in session state 
+# 2. Use (1) to render relevant info for match interface page (and profile image / profile editng) by querying on google_id and retrieving relevant info from 
+#    an endpoint (a new endpoint needs to be made to incorporate all of this)
+# 3. Change schedules_model to have friends list component (in mongoengine and atlas) and render
+# 4. Clean up fastapi routes, routers and organization (can be much more intuitive)
+# 5. Update Login logic with auth and verification of google_id --> redirect to render mathcInterface with user's
+# 6. Register logic (only when user doesnt exist) --> create user, add to db, add to schedules
+# 7. Once this is figured out, logic for CRUD operations should be added (aside read obviously)
+#  Long term: Ultimately, have this easily ported for other administrators (From other campuses) to set up with some technical 
+#        knowledge of deployment and mongodb necessary. Include instructions for that.
+
+
 # backend/app/main.py
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.users import router as users_router
 from app.api.auth import router as auth_router
 from app.api.profile import router as profile_router  # Import the profile router
-from app.db.database import connect_db, close_db
+
 
 
 ### AUTH IMPORTS
@@ -33,28 +46,17 @@ app.add_middleware(
 )
 
 @app.on_event("startup")
-async def startup_event():
+async def startup_event():  
     connect_db()
 
 @app.on_event("shutdown")
 async def shutdown_event():
+    pass
     close_db()
 
 app.include_router(users_router, prefix="/users", tags=["Users"])
 app.include_router(auth_router, prefix="/auth", tags=["Auth"])
 app.include_router(profile_router, prefix="/api", tags=["Profile"])  # Include profile route
-
-@app.get("/")
-async def root():
-    return {"message": "Hello, World!"}
-
-@app.on_event("startup")
-def startup_db():
-    connect_db()
-
-@app.on_event("shutdown")
-def shutdown_db():
-    close_db()
 
 
 
@@ -112,6 +114,7 @@ async def profile(request: Request, user: dict = Depends(get_current_user)):
         "message": f"Welcome to your dashboard, {user['email']}",
         # "user_data": user
     }   
+    
 @app.get('auth/logout')
 async def logout(request: Request):
     request.session.pop('user', None)

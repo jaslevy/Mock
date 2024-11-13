@@ -6,20 +6,18 @@ export default function UserProfile() {
   useEffect(() => {
     async function fetchUserProfile() {
       try {
-        const response = await fetch("http://127.0.0.1:8000/profile/user");
+        // Fetch data from the backend API
+        const response = await fetch("http://127.0.0.1:8000/users/");
         if (!response.ok) throw new Error("Failed to fetch user profile data");
-        const html = await response.text();
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(html, "text/html");
-        const name = doc.querySelector("p:nth-child(2)").textContent.split(":")[1].trim();
-        const email = doc.querySelector("p:nth-child(3)").textContent.split(":")[1].trim();
-        const bio = doc.querySelector("p:nth-child(4)").textContent.split(":")[1].trim();
-        setProfileData({ name, email, bio });
+        const data = await response.json();
+
+        // Set the first user's profile data
+        setProfileData(data[0]); // Assuming you want to display the first user's profile
       } catch (error) {
         console.error("Error:", error);
       }
     }
-  
+
     fetchUserProfile();
   }, []);
 

@@ -1,5 +1,6 @@
 from mongoengine import Document, StringField, ObjectIdField, DateTimeField, ListField, EmbeddedDocumentField, EmbeddedDocument
 from datetime import datetime
+from bson import ObjectId
 
 class User(EmbeddedDocument):
     google_id = StringField(required=True)
@@ -28,7 +29,7 @@ class History(EmbeddedDocument):
     with_user = EmbeddedDocumentField(User, required=True)
 
 class Schedule(Document):
-    _id = ObjectIdField(primary_key=True, default=ObjectId)
+    meta = {'collection': 'schedules'}  # Specify the collection name
     user_google_id = StringField(required=True)
     requests = ListField(EmbeddedDocumentField(Request))
     scheduled_mocks = ListField(EmbeddedDocumentField(ScheduledMock))

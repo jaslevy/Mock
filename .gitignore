@@ -1,5 +1,5 @@
 venv/
 backend/venv_backend/
-backend/env
+backend/.env
 backend/app/__pycache__
 backend/app/api/__pycache__
