@@ -1,9 +1,18 @@
 from mongoengine import connect, disconnect
-from models.user_model import User
+import os
+from dotenv import load_dotenv
 
-# Connect to the database
-connect('mydatabase', host='mongodb://localhost:27017/')
+load_dotenv()
 
-def get_user(username: str) -> User:
-    """Get a user from the database."""
-    return User.objects.get(username=username)
+MONGO_URI = os.getenv("MONGO_URI")
+
+def connect_db():
+    """Connect to MongoDB"""
+  # Ensure previous connections are closed
+    connect(
+        host = MONGO_URI
+    )
+
+def close_db():
+    """Disconnect from MongoDB"""
+    disconnect()  # Close the connection after each use

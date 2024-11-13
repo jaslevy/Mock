@@ -1,0 +1,11 @@
+{
+    "_id": "user_1", 
+    "username": "JohnDoe",
+    "name": "John Doe",
+    "bio": "Software engineer interested in algorithms and system design.",
+    "profile_image": "path_to_profile_image",
+    "friends": [
+      { "friend_id": "user_2", "name": "John Appleseed", "profile_picture": "path_to_profile_picture" }
+    ]
+  }
+  
