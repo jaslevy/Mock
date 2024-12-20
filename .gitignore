@@ -2,3 +2,9 @@ venv/
 backend/venv_backend/
 backend/app/__pycache__
 backend/app/api/__pycache__
+
+# Temporary data
+backend/app/db/
+backend/app/models/
+backend/app/deploy/mongo-data/
+backend/app/deploy/journal/
