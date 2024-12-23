@@ -19,5 +19,9 @@ Note: this will install the required packages. Don't worry these packages wont b
 2. Ensure that the backend is running already, then run 
 `npm start`
 
+# Development Worklow
+1. When adding a feature, create a new branch named `feat-(description-here)` using `git checkout -b brach`
+2. Make your changes, and push it to github using `git push -u origin your-branch-name`
+3. Open a pull request, have someone read it before modifying. 
 
 
