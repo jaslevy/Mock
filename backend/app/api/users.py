@@ -4,13 +4,6 @@ from app.models.user_model import User
 from mongoengine import connect, Document, StringField, EmailField, ListField, FloatField, IntField, DateTimeField
 from datetime import datetime
 
-# Connect to MongoDB (you can also put this in a separate db module)
-# connect(
-#     host="mongodb+srv://jl4537:mongo123@mockcluster.skhaw.mongodb.net/mock_interview_platform?retryWrites=true&w=majority&tlsAllowInvalidCertificates=true"
-# )
-
-# Define the User model
-
 # Initialize router
 router = APIRouter()
 

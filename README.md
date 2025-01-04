@@ -24,4 +24,10 @@ Note: this will install the required packages. Don't worry these packages wont b
 2. Make your changes, and push it to github using `git push -u origin your-branch-name`
 3. Open a pull request, have someone read it before modifying. 
 
+# Ticketing: 
+Confluence is here: https://sd2224.atlassian.net/jira/software/projects/SCRUM/boards/1
+Ask to be added to it if you want to take up tickets! 
+
+# What is currently being prioritized:
+Data storage of the system (Jasper created MongoDB). Have to figure out how to use it. 
 
